@@ -1,0 +1,58 @@
+1. Find all the topics and tasks taught in the month of October:
+db.Topics.find({
+  Date: {
+    $gte: ISODate("2020-10-01T00:00:00Z"),
+    $lte: ISODate("2020-10-31T23:59:59Z")
+  }
+});
+
+db.Tasks.find({
+  Date: {
+    $gte: ISODate("2020-10-01T00:00:00Z"),
+    $lte: ISODate("2020-10-31T23:59:59Z")
+  }
+});
+
+2) Find all the company drives between 15 Oct 2020 and 31 Oct 2020:
+db.CompanyDrives.find({
+  Date: {
+    $gte: ISODate("2020-10-15T00:00:00Z"),
+    $lte: ISODate("2020-10-31T23:59:59Z")
+  }
+});
+
+3. Find all the company drives and students who appeared for the placement:
+db.CompanyDrives.find({}, { DriveName: 1, Students: 1 });
+
+4. Find the number of problems solved by the user in CodeKata:
+db.CodeKata.aggregate([
+  {
+    $group: {
+      _id: "$UserID",
+      ProblemsSolvedCount: { $sum: "$ProblemsSolvedCount" }
+    }
+  }
+]);
+
+5. Find all the mentors with more than 15 mentees:
+db.Mentors.find({
+  MenteeCount: { $gt: 15 }
+});
+
+6. Find the number of users who are absent and task is not submitted between 15 Oct 2020 and 31 Oct 2020:
+db.Attendance.find({
+  Date: {
+    $gte: ISODate("2020-10-15T00:00:00Z"),
+    $lte: ISODate("2020-10-31T23:59:59Z")
+  },
+  Status: "Absent"
+});
+
+db.Tasks.find({
+  Date: {
+    $gte: ISODate("2020-10-15T00:00:00Z"),
+    $lte: ISODate("2020-10-31T23:59:59Z")
+  },
+  SubmissionStatus: "Not Submitted"
+});
+
